@@ -21,7 +21,7 @@ class GildedRoseTest {
         Item[] updatedItems = app.updateQuality();
         int actualQuality = updatedItems[0].quality;
         // assert
-        assertEquals(actualQuality, lastQuality - 2);
+        assertEquals(lastQuality - 2, actualQuality);
 
     }
 
@@ -36,7 +36,7 @@ class GildedRoseTest {
         int actualQuality = updatedItems[0].quality;
 
         // assert
-        assertEquals(actualQuality, lastQuality - 4);
+        assertEquals(lastQuality - 4, actualQuality);
     }
 
     // quality = 0
@@ -152,8 +152,53 @@ class GildedRoseTest {
         int actualQuality = updatedItems[0].quality;
 
         // assert
-        assertTrue(actualQuality == lastQuality);
-        assertEquals(actualQuality, 80);
+        assertEquals(lastQuality, actualQuality);
+        assertEquals(80, actualQuality);
+    }
+
+    // Concert specification
+    @Test
+    public void concertQualityIncreasedByTwoWhenBetweenTenAndSixDays() {
+        // when
+        Item[] items = new Item[] { new Item("Backstage passes to a TAFKAL80ETC concert", 8, 40)};
+        GildedRose app = new GildedRose(items);
+
+        // do
+        int lastQuality = items[0].quality;
+        Item[] updatedItems = app.updateQuality();
+        int actualQuality = updatedItems[0].quality;
+
+        // assert
+        assertEquals(lastQuality + 2, actualQuality);
+    }
+
+    @Test
+    public void concertQualityIncreasedByThreeWhenUnderSixDays() {
+        // when
+        Item[] items = new Item[] { new Item("Backstage passes to a TAFKAL80ETC concert", 5, 40)};
+        GildedRose app = new GildedRose(items);
+
+        // do
+        int lastQuality = items[0].quality;
+        Item[] updatedItems = app.updateQuality();
+        int actualQuality = updatedItems[0].quality;
+
+        // assert
+        assertEquals(lastQuality + 3, actualQuality);
+    }
+
+    @Test
+    public void nullQualityWhenSellLimitExceeded() {
+        // when
+        Item[] items = new Item[] { new Item("Backstage passes to a TAFKAL80ETC concert", 0, 40)};
+        GildedRose app = new GildedRose(items);
+
+        // do
+        Item[] updatedItems = app.updateQuality();
+        int actualQuality = updatedItems[0].quality;
+
+        // assert
+        assertEquals(0, actualQuality);
     }
 
 

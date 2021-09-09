@@ -8,7 +8,7 @@ class GildedRose {
 
     Item[] items;
 
-    private ItemService itemService;
+    private final ItemService itemService;
 
     public GildedRose(Item[] items) {
 
@@ -17,65 +17,72 @@ class GildedRose {
     }
 
     public Item[] updateQuality() {
-        for (int i = 0; i < items.length; i++) {
+        for (Item item : items) {
             // General cases
-            if (!itemService.isAgedBrie(items[i])
-                    && !itemService.isConcert(items[i])) {
-                if (items[i].quality > 0) {
-                    if (!itemService.isSulfuras(items[i])) {
-                        items[i].quality = items[i].quality - 1;
-                        if (itemService.isConjured(items[i])) {
-                            items[i].quality = items[i].quality - 1;
-                        }
-                    }
-                }
+            if (!itemService.isAgedBrie(item) && !itemService.isConcert(item)) {
+                // it's either common item or Sulfuras
+                updateItemWhenNotAgedBrieAndConcert(item);
+            // case specific
             } else {
-                if (items[i].quality < 50) {
-                    items[i].quality = items[i].quality + 1;
-
-                    if (itemService.isConcert(items[i])) {
-                        if (items[i].sellIn < 11) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1;
-                            }
-                        }
-
-                        if (items[i].sellIn < 6) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1;
-                            }
-                        }
+                if (item.quality < 50) {
+                    item.quality += 1;
+                    // if item is a concert
+                    if (itemService.isConcert(item)) {
+                        updateWhenObjectIsConcert(item);
                     }
                 }
             }
-
-            if (!itemService.isSulfuras(items[i])) {
-                items[i].sellIn = items[i].sellIn - 1;
+            // if it's not sulfuras then decrementation of sellIn
+            if (!itemService.isSulfuras(item)) {
+                item.sellIn -= 1;
             }
 
-            if (items[i].sellIn < 0) {
-                if (!itemService.isAgedBrie(items[i])) {
-                    if (!itemService.isConcert(items[i])) {
-                        if (items[i].quality > 0) {
-                            if (!itemService.isSulfuras(items[i])) {
-                                items[i].quality = items[i].quality - 1;
-                                if (itemService.isConjured(items[i])) {
-                                    items[i].quality = items[i].quality - 1;
-                                }
-                            }
-                        }
-                    } else {
-                        items[i].quality = items[i].quality - items[i].quality;
-                    }
-                } else {
-                    if (items[i].quality < 50) {
-                        items[i].quality = items[i].quality + 1;
-                    }
-                }
+            // if sellIn negative
+            if (item.sellIn < 0) {
+                updateNegativeItem(item);
             }
-
-
         }
         return items;
     }
+
+    public void updateNegativeItem(Item item) {
+        if (!itemService.isAgedBrie(item)) {
+            if (!itemService.isConcert(item)) {
+                updateItemWhenNotAgedBrieAndConcert(item);
+            } else {
+                item.quality = 0;
+            }
+        } else {
+            if (item.quality < 50) {
+                item.quality += 1;
+            }
+        }
+    }
+
+    public void updateItemWhenNotAgedBrieAndConcert(Item item) {
+        if (item.quality > 0) {
+            if (!itemService.isSulfuras(item)) {
+                item.quality -= 1;
+                if (itemService.isConjured(item)) {
+                    item.quality -= 1;
+                }
+            }
+        }
+    }
+
+    public void updateWhenObjectIsConcert(Item item) {
+        if (item.sellIn < 11) {
+            if (item.quality < 50) {
+                item.quality += 1;
+            }
+        }
+
+        if (item.sellIn < 6) {
+            if (item.quality < 50) {
+                item.quality += 1;
+            }
+        }
+    }
 }
+
+
