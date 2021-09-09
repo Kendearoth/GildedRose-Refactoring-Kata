@@ -70,6 +70,21 @@ class GildedRoseTest {
         assertTrue(lastQuality >= 0);
     }
 
+    // Aged Brie increase quality even if it's conjured
+    @Test
+    public void agedBrieConjuredItemsIncreaseQuality() {
+        Item[] items = new Item[] { new Item("Aged Brie Conjured Object", 3, 20)};
+        GildedRose app = new GildedRose(items);
+
+        //do
+        int lastQuality = items[0].quality;
+        Item[] updatedItems = app.updateQuality();
+        int actualQuality = updatedItems[0].quality;
+
+        // assert
+        assertTrue(actualQuality > lastQuality);
+    }
+
     // quality = 50
     @Test
     public void itemsNeverAboveQualityFiftyCaseUsual() {
@@ -123,6 +138,22 @@ class GildedRoseTest {
 
         // assert
         assertTrue(lastQuality <= 50);
+    }
+
+    // Sulfuras stay at 80 even if it's conjured
+    @Test
+    public void sulfurasConjuredItemsIncreaseQuality() {
+        Item[] items = new Item[] { new Item("Sulfuras, Hand of Ragnaros Conjured", 3, 80)};
+        GildedRose app = new GildedRose(items);
+
+        //do
+        int lastQuality = items[0].quality;
+        Item[] updatedItems = app.updateQuality();
+        int actualQuality = updatedItems[0].quality;
+
+        // assert
+        assertTrue(actualQuality == lastQuality);
+        assertEquals(actualQuality, 80);
     }
 
 
