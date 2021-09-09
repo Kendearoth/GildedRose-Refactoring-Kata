@@ -1,3 +1,20 @@
+# Installation steps
+
+- Open projet at ./Java/pom.xml with IntelliJ or Eclipse
+- maven clean install
+
+To run all the tests :
+- maven clean test
+
+On IntelliJ or Eclipse you can run the test in test classes :
+- src/test/java/com/gildedrose/service/ItemServiceTest.java
+- src/test/java/com/gildedrose/GildedRoseTest.java
+
+An example of results after serveral days with :
+- src/test/java/com/gildedrose/TexttestFixture.java
+
+
+
 # Gilded Rose Refactoring Kata
 
 This Kata was originally created by Terry Hughes (http://twitter.com/TerryHughes). It is already on GitHub [here](https://github.com/NotMyself/GildedRose). See also [Bobby Johnson's description of the kata](http://iamnotmyself.com/2011/02/13/refactor-this-the-gilded-rose-kata/).
