@@ -10,7 +10,7 @@ On IntelliJ or Eclipse you can run the test in test classes :
 - src/test/java/com/gildedrose/service/ItemServiceTest.java
 - src/test/java/com/gildedrose/GildedRoseTest.java
 
-An example of results after serveral days with :
+An example of results after several days with :
 - src/test/java/com/gildedrose/TexttestFixture.java
 
 
