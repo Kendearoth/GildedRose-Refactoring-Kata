@@ -1,19 +1,32 @@
 package com.gildedrose;
 
+import com.gildedrose.model.Item;
+import com.gildedrose.service.ItemService;
+
 class GildedRose {
+
+
     Item[] items;
 
+    private ItemService itemService;
+
     public GildedRose(Item[] items) {
+
         this.items = items;
+        this.itemService = new ItemService();
     }
 
-    public void updateQuality() {
+    public Item[] updateQuality() {
         for (int i = 0; i < items.length; i++) {
+            // General cases
             if (!items[i].name.equals("Aged Brie")
                     && !items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
                 if (items[i].quality > 0) {
                     if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
                         items[i].quality = items[i].quality - 1;
+                        if (itemService.isConjured(items[i])) {
+                            items[i].quality = items[i].quality - 1;
+                        }
                     }
                 }
             } else {
@@ -46,6 +59,9 @@ class GildedRose {
                         if (items[i].quality > 0) {
                             if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
                                 items[i].quality = items[i].quality - 1;
+                                if (itemService.isConjured(items[i])) {
+                                    items[i].quality = items[i].quality - 1;
+                                }
                             }
                         }
                     } else {
@@ -57,6 +73,9 @@ class GildedRose {
                     }
                 }
             }
+
+
         }
+        return items;
     }
 }
