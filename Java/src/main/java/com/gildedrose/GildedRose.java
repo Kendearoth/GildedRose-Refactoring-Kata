@@ -21,14 +21,14 @@ class GildedRose {
             // General cases
             if (!itemService.isAgedBrie(item) && !itemService.isConcert(item)) {
                 // it's either common item or Sulfuras
-                updateItemWhenNotAgedBrieAndConcert(item);
+                updateItemQualityWhenNotAgedBrieAndConcert(item);
             // case specific
             } else {
                 if (item.quality < 50) {
                     item.quality += 1;
                     // if item is a concert
                     if (itemService.isConcert(item)) {
-                        updateWhenObjectIsConcert(item);
+                        updateQualityWhenItemIsConcert(item);
                     }
                 }
             }
@@ -39,16 +39,16 @@ class GildedRose {
 
             // if sellIn negative
             if (item.sellIn < 0) {
-                updateNegativeItem(item);
+                updateNegativeItemQuality(item);
             }
         }
         return items;
     }
 
-    public void updateNegativeItem(Item item) {
+    public void updateNegativeItemQuality(Item item) {
         if (!itemService.isAgedBrie(item)) {
             if (!itemService.isConcert(item)) {
-                updateItemWhenNotAgedBrieAndConcert(item);
+                updateItemQualityWhenNotAgedBrieAndConcert(item);
             } else {
                 item.quality = 0;
             }
@@ -59,7 +59,7 @@ class GildedRose {
         }
     }
 
-    public void updateItemWhenNotAgedBrieAndConcert(Item item) {
+    public void updateItemQualityWhenNotAgedBrieAndConcert(Item item) {
         if (item.quality > 0) {
             if (!itemService.isSulfuras(item)) {
                 item.quality -= 1;
@@ -70,7 +70,7 @@ class GildedRose {
         }
     }
 
-    public void updateWhenObjectIsConcert(Item item) {
+    public void updateQualityWhenItemIsConcert(Item item) {
         if (item.sellIn < 11) {
             if (item.quality < 50) {
                 item.quality += 1;
